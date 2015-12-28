@@ -34,6 +34,7 @@ int main(int argc, char** argv) {
 
 	if (hProcHandle == INVALID_HANDLE_VALUE || hProcHandle == NULL) {
 		std::cerr << "Failed to open process -- invalid handle" << std::endl;
+		std::cerr << "Error code: " << GetLastError() << std::endl;
 		return EXIT_FAILURE;
 	}
 	else {
