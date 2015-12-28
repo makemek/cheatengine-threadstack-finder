@@ -21,8 +21,9 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2F2D8AAC-46AB-4E80-AD8A-8EDDBA44E5EA}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>osuPlayback</RootNamespace>
+    <RootNamespace>threadstack</RootNamespace>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>threadstack</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -144,9 +145,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ntinfo.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="CEFuncProc.pas" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ntinfo.h" />
