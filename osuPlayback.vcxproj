@@ -144,8 +144,6 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="ntinfo.cpp" />
-    <ClCompile Include="release.cpp" />
-    <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="CEFuncProc.pas" />
