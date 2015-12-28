@@ -12,9 +12,12 @@ The program will output all thread's base addresses.
 Make sure that a target process is opened before passing an argument.
 
 # Example
+Input
+```
 threadstack.exe 6540
-
+```
 Output
+```
 PID 6540 (0x198c)
 Grabbing handle
 Success
@@ -24,3 +27,4 @@ PID: 6540 Thread ID: 0x1bbc
 TID: 0x1990 = THREADSTACK 0 BASE ADDRESS: 0xbcff8c
 TID: 0x1b1c = THREADSTACK 1 BASE ADDRESS: 0x4d8ff8c
 TID: 0x1bbc = THREADSTACK 2 BASE ADDRESS: 0x518ff8c
+```
