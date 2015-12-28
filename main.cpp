@@ -12,6 +12,7 @@
 #include "ntinfo.h"
 
 std::vector<DWORD> threadList(DWORD pid) {
+	// solution from http://stackoverflow.com/questions/1206878/enumerating-threads-in-windows
 	std::vector<DWORD> vect = std::vector<DWORD>();
 	HANDLE h = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if (h == INVALID_HANDLE_VALUE)
