@@ -131,7 +131,7 @@ int main(int argc, char** argv) {
 	for (auto it = threadId.begin(); it != threadId.end(); ++it) {
 		HANDLE threadHandle = OpenThread(THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION, FALSE, *it);
 		DWORD threadStartAddress = GetThreadStartAddress(hProcHandle, threadHandle);
-		std::cout << "TID: " << std::hex << *it << " = " << "THREADSTACK" << std::dec << stackNum << " : " << std::hex << threadStartAddress << std::endl;
+		printf("TID: 0x%04x = THREADSTACK%2d BASE ADDRESS: 0x%04x\n", *it, stackNum, threadStartAddress);
 		stackNum++;
 	}
 
