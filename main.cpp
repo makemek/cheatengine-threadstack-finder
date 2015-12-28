@@ -40,7 +40,7 @@ std::vector<DWORD> threadList(DWORD pid) {
 }
 
 DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
-	
+	// rewritten from https://github.com/cheat-engine/cheat-engine/blob/master/Cheat%20Engine/CEFuncProc.pas#L3080
 	DWORD used = 0, ret = 0;
 	DWORD stacktop = 0, result = 0;
 
