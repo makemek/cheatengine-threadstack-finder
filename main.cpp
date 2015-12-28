@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 #include <windows.h>
 
@@ -8,42 +9,35 @@
 #include <tlhelp32.h>
 #include <Psapi.h>
 
-#include "threadInfo.h"
 #include "ntinfo.h"
 
 std::vector<DWORD> threadList(DWORD pid);
 DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread);
 
-bool isGameAvail;
-
 int main(int argc, char** argv) {
-	std::string gameName = "osu!";
-	LPCSTR LGameName = "osu!";
-	
-	HWND hGameWindow = NULL;
-	DWORD dwProcID = NULL;
+	std::string pid = argv[1];
+	DWORD dwProcID;
+
+	std::stringstream stringstream(pid);
+	stringstream >> std::dec >> dwProcID;
+
+	if (!dwProcID) {
+		std::cerr << pid << " is not a valid process id (PID)" << std::endl;
+		return EXIT_FAILURE;
+	}
+
 	HANDLE hProcHandle = NULL;
-	isGameAvail = false;
+	
+	printf("PID %d (0x%x)\n", dwProcID, dwProcID);
+	std::cout << "Grabbing handle" << std::endl;
+	hProcHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcID);
 
-	/* keep polling until target process is opened */
-	std::cout << "Looking for " << gameName << std::endl;
-	while (!isGameAvail) {
-		hGameWindow = FindWindow(NULL, LGameName);
-		GetWindowThreadProcessId(hGameWindow, &dwProcID);
-		if (!dwProcID)
-			continue;
-
-		std::cout << "Found it PID " << dwProcID << std::endl;
-		std::cout << "Grabbing handle" << std::endl;
-		hProcHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcID);
-
-		if (hProcHandle == INVALID_HANDLE_VALUE || hProcHandle == NULL) {
-			std::cerr << "Failed to open process -- invalid handle" << std::endl;
-		}
-		else {
-			std::cout << "Success" << std::endl;
-			isGameAvail = true;
-		}
+	if (hProcHandle == INVALID_HANDLE_VALUE || hProcHandle == NULL) {
+		std::cerr << "Failed to open process -- invalid handle" << std::endl;
+		return EXIT_FAILURE;
+	}
+	else {
+		std::cout << "Success" << std::endl;
 	}
 	
 	std::vector<DWORD> threadId = threadList(dwProcID);
