@@ -103,9 +103,8 @@ int main(int argc, char** argv) {
 	DWORD dwProcID = NULL;
 	HANDLE hProcHandle = NULL;
 	isGameAvail = false;
-	std::string gameStatus;
 
-	// polling until target process is opened
+	// keep polling until target process is opened
 	std::cout << "Looking for " << gameName << std::endl;
 	while (!isGameAvail) {
 		hGameWindow = FindWindow(NULL, LGameName);
@@ -118,11 +117,10 @@ int main(int argc, char** argv) {
 		hProcHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcID);
 
 		if (hProcHandle == INVALID_HANDLE_VALUE || hProcHandle == NULL) {
-			gameStatus = "Failed to open process -- invalid handle";
+			std::cerr << "Failed to open process -- invalid handle" << std::endl;
 		}
 		else {
 			std::cout << "Success" << std::endl;
-			gameStatus = gameName + " is ready to hack";
 			isGameAvail = true;
 		}
 	}
