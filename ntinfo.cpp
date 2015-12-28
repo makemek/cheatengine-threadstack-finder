@@ -41,7 +41,6 @@ void* GetThreadStackTopAddress_x86(HANDLE hProcess, HANDLE hThread) {
 	{
 		NT_TIB tib = { 0 };
 		THREAD_BASIC_INFORMATION tbi = { 0 };
-		THREADINFOCLASS x;
 		
 		NTSTATUS status = NtQueryInformationThread(hThread, ThreadBasicInformation, &tbi, sizeof(tbi), nullptr);
 		if (status >= 0)
