@@ -1,9 +1,8 @@
 # cheatengine-threadstack-finder
-A simple program that list all thread's base address based on process's name.
-ONLY WORK FOR 
-	- 32 bit process
-	- Launched by you
-Depending on a process's access rights.
+A simple program that list all thread's base address based on process's name.  
+**ONLY WORK FOR**  
+- **32 bit process**  
+- **A process launched by you so that it has enough access rights**  
 IF YOU SEE BASE ADDRESS AS 0x00000000, it propably is a 64-bit process.
 
 Pass command process id (PID) in decimal as a command line argument.
