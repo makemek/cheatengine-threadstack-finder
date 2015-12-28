@@ -1,5 +1,4 @@
-// solution from
-// http://stackoverflow.com/questions/32297431/getting-the-tib-teb-of-a-thread-by-its-thread-handle-2015
+/* solution from http://stackoverflow.com/questions/32297431/getting-the-tib-teb-of-a-thread-by-its-thread-handle-2015 */
 
 #ifndef NTINFO_H
 #define NTINFO_H

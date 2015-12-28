@@ -25,7 +25,7 @@ int main(int argc, char** argv) {
 	HANDLE hProcHandle = NULL;
 	isGameAvail = false;
 
-	// keep polling until target process is opened
+	/* keep polling until target process is opened */
 	std::cout << "Looking for " << gameName << std::endl;
 	while (!isGameAvail) {
 		hGameWindow = FindWindow(NULL, LGameName);
@@ -59,7 +59,7 @@ int main(int argc, char** argv) {
 }
 
 std::vector<DWORD> threadList(DWORD pid) {
-	// solution from http://stackoverflow.com/questions/1206878/enumerating-threads-in-windows
+	/* solution from http://stackoverflow.com/questions/1206878/enumerating-threads-in-windows */
 	std::vector<DWORD> vect = std::vector<DWORD>();
 	HANDLE h = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
 	if (h == INVALID_HANDLE_VALUE)
@@ -87,7 +87,7 @@ std::vector<DWORD> threadList(DWORD pid) {
 }
 
 DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
-	// rewritten from https://github.com/cheat-engine/cheat-engine/blob/master/Cheat%20Engine/CEFuncProc.pas#L3080
+	/* rewritten from https://github.com/cheat-engine/cheat-engine/blob/master/Cheat%20Engine/CEFuncProc.pas#L3080 */
 	DWORD used = 0, ret = 0;
 	DWORD stacktop = 0, result = 0;
 
@@ -96,12 +96,14 @@ DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 	GetModuleInformation(processHandle, LoadLibrary("kernel32.dll"), &mi, sizeof(mi));
 	stacktop = (DWORD)GetThreadStackTopAddress_x86(processHandle, hThread);
 
-	// The stub below has the same result as calling GetThreadStackTopAddress()
+	/* The stub below has the same result as calling GetThreadStackTopAddress_x86() */
 	// LPCVOID tebBaseAddress = GetThreadTebBaseAddress(processHandle, hThread);
 	//if (tebBaseAddress)
 	//	ReadProcessMemory(processHandle, (LPCVOID)((DWORD)tebBaseAddress + 4), &stacktop, 4, NULL);
 
-	// 32 bit - not work -- can't get GetThreadContext()
+	/* rewritten from 32 bit stub (line3141)
+	Result: fail -- can't get GetThreadContext() 
+	*/
 	//CONTEXT context;
 	//LDT_ENTRY ldtentry;
 	//GetModuleInformation(processHandle, LoadLibrary("kernel32.dll"), &mi, sizeof(mi));
