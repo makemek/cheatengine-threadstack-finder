@@ -123,7 +123,7 @@ DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 		//find the stack entry pointing to the function that calls "ExitXXXXXThread"
 		//Fun thing to note: It's the first entry that points to a address in kernel32
 
-		DWORD* buf32 = new DWORD[4096 / 4];
+		DWORD* buf32 = new DWORD[4096];
 
 		if (ReadProcessMemory(processHandle, (LPCVOID)(stacktop - 4096), buf32, 4096, NULL)) {
 			for (int i = 4096 / 4 - 1; i >= 0; --i) {
