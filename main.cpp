@@ -88,7 +88,7 @@ DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 
 	MODULEINFO mi;
 
-	GetModuleInformation(processHandle, LoadLibrary("kernel32.dll"), &mi, sizeof(mi));
+	GetModuleInformation(processHandle, GetModuleHandle("kernel32.dll"), &mi, sizeof(mi));
 	stacktop = (DWORD)GetThreadStackTopAddress_x86(processHandle, hThread);
 
 	/* The stub below has the same result as calling GetThreadStackTopAddress_x86() 
