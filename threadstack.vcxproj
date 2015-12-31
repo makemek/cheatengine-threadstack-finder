@@ -143,7 +143,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="threadstack.cpp" />
     <ClCompile Include="ntinfo.cpp" />
   </ItemGroup>
   <ItemGroup>
