@@ -19,9 +19,7 @@ std::vector<DWORD> threadList(DWORD pid) {
 			if (te.dwSize >= FIELD_OFFSET(THREADENTRY32, th32OwnerProcessID) +
 				sizeof(te.th32OwnerProcessID)) {
 
-
 				if (te.th32OwnerProcessID == pid) {
-					printf("PID: %04d Thread ID: 0x%04x\n", te.th32OwnerProcessID, te.th32ThreadID);
 					vect.push_back(te.th32ThreadID);
 				}
 
