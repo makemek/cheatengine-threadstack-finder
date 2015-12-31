@@ -91,32 +91,6 @@ DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 	GetModuleInformation(processHandle, GetModuleHandle("kernel32.dll"), &mi, sizeof(mi));
 	stacktop = (DWORD)GetThreadStackTopAddress_x86(processHandle, hThread);
 
-	/* The stub below has the same result as calling GetThreadStackTopAddress_x86() 
-	change line 54 in ntinfo.cpp to return tbi.TebBaseAddress
-	Then use this stub
-	*/
-	//LPCVOID tebBaseAddress = GetThreadStackTopAddress_x86(processHandle, hThread);
-	//if (tebBaseAddress)
-	//	ReadProcessMemory(processHandle, (LPCVOID)((DWORD)tebBaseAddress + 4), &stacktop, 4, NULL);
-
-	/* rewritten from 32 bit stub (line3141)
-	Result: fail -- can't get GetThreadContext() 
-	*/
-	//CONTEXT context;
-	//LDT_ENTRY ldtentry;
-	//GetModuleInformation(processHandle, LoadLibrary("kernel32.dll"), &mi, sizeof(mi));
-	//
-	//if (GetThreadContext(processHandle, &context)) {
-	//	
-	//	if (GetThreadSelectorEntry(hThread, context.SegFs, &ldtentry)) {
-	//		ReadProcessMemory(processHandle,
-	//			(LPCVOID)( (DWORD*)(ldtentry.BaseLow + ldtentry.HighWord.Bytes.BaseMid << ldtentry.HighWord.Bytes.BaseHi << 24) + 4),
-	//			&stacktop,
-	//			4,
-	//			NULL);
-	//	}
-	//}
-
 	CloseHandle(hThread);
 
 	if (stacktop) {
