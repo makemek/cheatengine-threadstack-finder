@@ -1,6 +1,10 @@
 #include "ntinfo.h"
 #include "threadstack.h"
 
+// list all PIDs and TIDs
+#include <tlhelp32.h>
+#include <Psapi.h>
+
 std::vector<DWORD> threadList(DWORD pid) {
 	/* solution from http://stackoverflow.com/questions/1206878/enumerating-threads-in-windows */
 	std::vector<DWORD> vect = std::vector<DWORD>();
