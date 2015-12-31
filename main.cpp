@@ -14,45 +14,6 @@
 std::vector<DWORD> threadList(DWORD pid);
 DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread);
 
-int main(int argc, char** argv) {
-	std::string pid = argv[1];
-	DWORD dwProcID;
-
-	std::stringstream stringstream(pid);
-	stringstream >> std::dec >> dwProcID;
-
-	if (!dwProcID) {
-		std::cerr << pid << " is not a valid process id (PID)" << std::endl;
-		return EXIT_FAILURE;
-	}
-
-	HANDLE hProcHandle = NULL;
-	
-	printf("PID %d (0x%x)\n", dwProcID, dwProcID);
-	std::cout << "Grabbing handle" << std::endl;
-	hProcHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwProcID);
-
-	if (hProcHandle == INVALID_HANDLE_VALUE || hProcHandle == NULL) {
-		std::cerr << "Failed to open process -- invalid handle" << std::endl;
-		std::cerr << "Error code: " << GetLastError() << std::endl;
-		return EXIT_FAILURE;
-	}
-	else {
-		std::cout << "Success" << std::endl;
-	}
-	
-	std::vector<DWORD> threadId = threadList(dwProcID);
-	int stackNum = 0;
-	for (auto it = threadId.begin(); it != threadId.end(); ++it) {
-		HANDLE threadHandle = OpenThread(THREAD_GET_CONTEXT | THREAD_QUERY_INFORMATION, FALSE, *it);
-		DWORD threadStartAddress = GetThreadStartAddress(hProcHandle, threadHandle);
-		printf("TID: 0x%04x = THREADSTACK%2d BASE ADDRESS: 0x%04x\n", *it, stackNum, threadStartAddress);
-		stackNum++;
-	}
-
-	return EXIT_SUCCESS;
-}
-
 std::vector<DWORD> threadList(DWORD pid) {
 	/* solution from http://stackoverflow.com/questions/1206878/enumerating-threads-in-windows */
 	std::vector<DWORD> vect = std::vector<DWORD>();
