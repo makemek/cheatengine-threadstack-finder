@@ -143,11 +143,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
+    <ClCompile Include="threadstack.cpp" />
     <ClCompile Include="ntinfo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ntinfo.h" />
+    <ClInclude Include="threadstack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
