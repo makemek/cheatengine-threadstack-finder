@@ -6,5 +6,6 @@
 
 std::vector<DWORD> threadList(DWORD pid);
 DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread);
+DWORD baseThreadstackAddress(DWORD processID, DWORD threadstackNumber);
 
 #endif

@@ -1,5 +1,9 @@
 #include "ntinfo.h"
 #include "threadstack.h"
+#include "InvalidHandleException.hpp"
+#include "BadAddressException.hpp"
+
+#include <sstream>
 
 // list all PIDs and TIDs
 #include <tlhelp32.h>
@@ -63,4 +67,38 @@ DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 	}
 
 	return result;
+}
+
+DWORD baseThreadstackAddress(DWORD pid, DWORD stackNum) {
+	
+	auto tids = threadList(pid);
+	if (tids.empty()) {
+		throw std::invalid_argument("Process ID not found");
+	}
+	if (stackNum > tids.size()) {
+		std::ostringstream stringstream;
+		stringstream << "THREADSTACK" << stackNum << " doesn't exist!"
+			<< " There are " << tids.size() << " threads available";
+		throw std::out_of_range(stringstream.str());
+	}
+		
+	HANDLE threadHandle = OpenThread(THREAD_ALL_ACCESS, FALSE, tids[stackNum]);
+	if (!threadHandle) {
+		throw InvalidHandleException("Invalid thread handle", GetLastError());
+	}
+
+	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+	if (!procHandle) {
+		throw InvalidHandleException("Invalid process handle", GetLastError());
+	}
+
+	DWORD addr = GetThreadStartAddress(procHandle, threadHandle);
+	CloseHandle(procHandle);
+
+	if (!addr)
+		throw BadAddressException("Invalid address. 64-bit process?", addr);
+
+	CloseHandle(threadHandle);
+
+	return addr;
 }
