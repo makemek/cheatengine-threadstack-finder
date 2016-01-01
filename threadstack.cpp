@@ -1,11 +1,15 @@
 #include "ntinfo.h"
 #include "threadstack.h"
+#include "InvalidHandleException.hpp"
+#include "BadAddressException.hpp"
+
+#include <sstream>
 
 // list all PIDs and TIDs
 #include <tlhelp32.h>
 #include <Psapi.h>
 
-std::vector<DWORD> threadList(DWORD pid) {
+std::vector<DWORD> threadstack::threadList(DWORD pid) {
 	/* solution from http://stackoverflow.com/questions/1206878/enumerating-threads-in-windows */
 	std::vector<DWORD> vect = std::vector<DWORD>();
 	HANDLE h = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
@@ -19,9 +23,7 @@ std::vector<DWORD> threadList(DWORD pid) {
 			if (te.dwSize >= FIELD_OFFSET(THREADENTRY32, th32OwnerProcessID) +
 				sizeof(te.th32OwnerProcessID)) {
 
-
 				if (te.th32OwnerProcessID == pid) {
-					printf("PID: %04d Thread ID: 0x%04x\n", te.th32OwnerProcessID, te.th32ThreadID);
 					vect.push_back(te.th32ThreadID);
 				}
 
@@ -33,7 +35,7 @@ std::vector<DWORD> threadList(DWORD pid) {
 	return vect;
 }
 
-DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
+DWORD threadstack::GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 	/* rewritten from https://github.com/cheat-engine/cheat-engine/blob/master/Cheat%20Engine/CEFuncProc.pas#L3080 */
 	DWORD used = 0, ret = 0;
 	DWORD stacktop = 0, result = 0;
@@ -65,4 +67,38 @@ DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 	}
 
 	return result;
+}
+
+DWORD threadstack::baseThreadstackAddress(DWORD pid, DWORD stackNum) {
+	
+	auto tids = threadList(pid);
+	if (tids.empty()) {
+		throw std::invalid_argument("Process ID not found");
+	}
+	if (stackNum > tids.size()) {
+		std::ostringstream stringstream;
+		stringstream << "THREADSTACK" << stackNum << " doesn't exist!"
+			<< " There are " << tids.size() << " threads available";
+		throw std::out_of_range(stringstream.str());
+	}
+		
+	HANDLE threadHandle = OpenThread(THREAD_ALL_ACCESS, FALSE, tids[stackNum]);
+	if (!threadHandle) {
+		throw InvalidHandleException("Invalid thread handle", GetLastError());
+	}
+
+	HANDLE procHandle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+	if (!procHandle) {
+		throw InvalidHandleException("Invalid process handle", GetLastError());
+	}
+
+	DWORD addr = GetThreadStartAddress(procHandle, threadHandle);
+	CloseHandle(procHandle);
+
+	if (!addr)
+		throw BadAddressException("Invalid address. 64-bit process?", addr);
+
+	CloseHandle(threadHandle);
+
+	return addr;
 }
