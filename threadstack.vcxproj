@@ -143,14 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BadAddressException.cpp" />
-    <ClCompile Include="InvalidHandleException.cpp" />
     <ClCompile Include="threadstack.cpp" />
     <ClCompile Include="ntinfo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BadAddressException.hpp" />
-    <ClInclude Include="InvalidHandleException.hpp" />
     <ClInclude Include="ntinfo.h" />
     <ClInclude Include="threadstack.h" />
   </ItemGroup>
