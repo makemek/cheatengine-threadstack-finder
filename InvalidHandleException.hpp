@@ -3,14 +3,15 @@
 
 #include <exception>
 
-class InvalidHandleException: std::exception {
+namespace threadstack {
+	class InvalidHandleException : std::exception {
 
-public:
-	explicit InvalidHandleException(const char* msg, long errorCode);
-	long getErrorCode();
+	public:
+		explicit InvalidHandleException(const char* msg, long errorCode);
+		long getErrorCode();
 
-private:
-	int errCode;
-};
-
+	private:
+		int errCode;
+	};
+}
 #endif

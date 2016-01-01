@@ -1,12 +1,12 @@
 #include "InvalidHandleException.hpp"
 
-InvalidHandleException::InvalidHandleException(const char * msg, long errorCode)
+threadstack::InvalidHandleException::InvalidHandleException(const char * msg, long errorCode)
 	:std::exception(msg)
 {
 	errCode = errorCode;
 }
 
-long InvalidHandleException::getErrorCode()
+long threadstack::InvalidHandleException::getErrorCode()
 {
 	return errCode;
 }

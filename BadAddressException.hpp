@@ -3,14 +3,15 @@
 
 #include <exception>
 
-class BadAddressException: std::exception {
+namespace threadstack {
+	class BadAddressException : std::exception {
 
-public:
-	explicit BadAddressException(const char* msg, unsigned long address);
-	unsigned long getAddress();
+	public:
+		explicit BadAddressException(const char* msg, unsigned long address);
+		unsigned long getAddress();
 
-private:
-	unsigned long address;
-};
-
+	private:
+		unsigned long address;
+	};
+}
 #endif

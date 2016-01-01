@@ -21,7 +21,7 @@ enum THREADINFOCLASS
 	ThreadBasicInformation,
 };
 
-void* GetThreadStackTopAddress_x86(HANDLE hProcess, HANDLE hThread) {
+void* threadstack::GetThreadStackTopAddress_x86(HANDLE hProcess, HANDLE hThread) {
 	
 	LPSTR moduleName = "ntdll.dll";
 

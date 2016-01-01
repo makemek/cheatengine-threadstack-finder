@@ -9,7 +9,7 @@
 #include <tlhelp32.h>
 #include <Psapi.h>
 
-std::vector<DWORD> threadList(DWORD pid) {
+std::vector<DWORD> threadstack::threadList(DWORD pid) {
 	/* solution from http://stackoverflow.com/questions/1206878/enumerating-threads-in-windows */
 	std::vector<DWORD> vect = std::vector<DWORD>();
 	HANDLE h = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, 0);
@@ -35,7 +35,7 @@ std::vector<DWORD> threadList(DWORD pid) {
 	return vect;
 }
 
-DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
+DWORD threadstack::GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 	/* rewritten from https://github.com/cheat-engine/cheat-engine/blob/master/Cheat%20Engine/CEFuncProc.pas#L3080 */
 	DWORD used = 0, ret = 0;
 	DWORD stacktop = 0, result = 0;
@@ -69,7 +69,7 @@ DWORD GetThreadStartAddress(HANDLE processHandle, HANDLE hThread) {
 	return result;
 }
 
-DWORD baseThreadstackAddress(DWORD pid, DWORD stackNum) {
+DWORD threadstack::baseThreadstackAddress(DWORD pid, DWORD stackNum) {
 	
 	auto tids = threadList(pid);
 	if (tids.empty()) {
